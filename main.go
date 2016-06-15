@@ -42,8 +42,6 @@ func main() {
 		HookURL: *slackHookURL,
 	}
 
-	log.Println("test")
-
 	for i, f := range files {
 		files[i], _ = filepath.Abs(f)
 		fmt.Println("Watching: " + f)
