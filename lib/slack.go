@@ -8,23 +8,20 @@ import (
 	"strings"
 )
 
-const (
-	defaultChannel  = "#general"
-	defaultUserName = "webhookbot"
-)
-
 // Slack has slack params
 type Slack struct {
-	HookURL  string
-	Channel  string
-	UserName string
+	HookURL   string
+	Channel   string
+	UserName  string
+	IconEmoji string
 }
 
 // PostMessage send message
 func (s *Slack) PostMessage(message string) {
-	var body = []byte(fmt.Sprintf(`{"channel":"%s","username":"%s","text":"%s"}`,
-		s.channel(),
-		s.userName(),
+	var body = []byte(fmt.Sprintf(`{"channel":"%s","username":"%s","icon_emoji":"%s","text":"%s"}`,
+		s.Channel,
+		s.UserName,
+		s.IconEmoji,
 		"```"+strings.Replace(message, "\"", "\\\"", -1)+"```"))
 	req, _ := http.NewRequest("POST", s.HookURL, bytes.NewBuffer(body))
 	req.Header.Set("Content-Type", "application/json")
@@ -35,18 +32,4 @@ func (s *Slack) PostMessage(message string) {
 		log.Println(resp)
 		log.Println(err)
 	}
-}
-
-func (s *Slack) channel() string {
-	if s.Channel == "" {
-		return defaultChannel
-	}
-	return s.Channel
-}
-
-func (s *Slack) userName() string {
-	if s.UserName == "" {
-		return defaultUserName
-	}
-	return s.UserName
 }

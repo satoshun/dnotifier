@@ -11,7 +11,9 @@ import (
 
 var (
 	slackHookURL = flag.String("u", "", "your slack hook url")
-	channel      = flag.String("c", "general", "your channel name. default general")
+	channel      = flag.String("c", "#general", "your channel name. default #general")
+	userName     = flag.String("n", "webhookbot", "your username")
+	iconEmoji    = flag.String("i", ":ghost:", "your icon emoji")
 	files        arrayFlags
 )
 
@@ -39,7 +41,10 @@ func main() {
 	}
 
 	api := dnotifier.Slack{
-		HookURL: *slackHookURL,
+		HookURL:   *slackHookURL,
+		Channel:   *channel,
+		UserName:  *userName,
+		IconEmoji: *iconEmoji,
 	}
 
 	for i, f := range files {
