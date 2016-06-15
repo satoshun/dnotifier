@@ -2,6 +2,12 @@
 
 Send slack message when changed file.
 
+It runs on OSX or Linux. if your platform is OSX then must be install `fswatch`.
+
+```shell
+brew install fswatch
+```
+
 
 ## install
 
