@@ -35,8 +35,7 @@ func register(path string) {
 	cache[path] = string(dat)
 }
 
-func diff(path string) string {
-	fmt.Println(path)
+func diff(path string) EventItem {
 	n, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Fatal(err)
@@ -58,5 +57,5 @@ func diff(path string) string {
 	}
 
 	cache[path] = string(n)
-	return r
+	return EventItem{Path: path, Diff: r}
 }

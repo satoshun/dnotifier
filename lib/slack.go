@@ -12,15 +12,14 @@ import (
 type Slack struct {
 	HookURL   string
 	Channel   string
-	UserName  string
 	IconEmoji string
 }
 
 // PostMessage send message
-func (s *Slack) PostMessage(message string) {
+func (s *Slack) PostMessage(username, message string) {
 	var body = []byte(fmt.Sprintf(`{"channel":"%s","username":"%s","icon_emoji":"%s","text":"%s"}`,
 		s.Channel,
-		s.UserName,
+		username,
 		s.IconEmoji,
 		"```"+strings.Replace(message, "\"", "\\\"", -1)+"```"))
 	req, _ := http.NewRequest("POST", s.HookURL, bytes.NewBuffer(body))

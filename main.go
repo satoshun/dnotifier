@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"path"
 	"path/filepath"
 
 	dnotifier "github.com/satoshun/dnotifier/lib"
@@ -12,7 +13,7 @@ import (
 var (
 	slackHookURL = flag.String("u", "", "your slack hook url")
 	channel      = flag.String("c", "#general", "your channel name. default #general")
-	userName     = flag.String("n", "webhookbot", "your username")
+	userName     = flag.String("n", "", "your username")
 	iconEmoji    = flag.String("i", ":ghost:", "your icon emoji")
 	files        arrayFlags
 )
@@ -43,7 +44,6 @@ func main() {
 	api := dnotifier.Slack{
 		HookURL:   *slackHookURL,
 		Channel:   *channel,
-		UserName:  *userName,
 		IconEmoji: *iconEmoji,
 	}
 
@@ -57,9 +57,13 @@ func main() {
 	for {
 		select {
 		case msg := <-w.Event:
-			log.Println("post:" + msg)
-			if msg != "" {
-				api.PostMessage(msg)
+			log.Println("change:" + msg.Path)
+			if msg.Diff != "" {
+				name := *userName
+				if name == "" {
+					name = path.Base(msg.Path)
+				}
+				api.PostMessage(name, msg.Diff)
 			}
 		}
 	}

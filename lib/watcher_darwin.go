@@ -10,7 +10,7 @@ import (
 
 // Watch is watch specified path
 func Watch(paths ...string) Watcher {
-	event := make(chan string)
+	event := make(chan EventItem)
 	for _, p := range paths {
 		register(p)
 	}

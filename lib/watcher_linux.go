@@ -9,7 +9,7 @@ import (
 
 // Watch is watch specified path
 func Watch(path ...string) Watcher {
-	event := make(chan string)
+	event := make(chan EventItem)
 	for _, p := range path {
 		watch(p, event)
 	}
@@ -19,7 +19,7 @@ func Watch(path ...string) Watcher {
 	}
 }
 
-func watch(p string, event chan<- string) {
+func watch(p string, event chan<- EventItem) {
 	watcher, err := inotify.NewWatcher()
 	if err != nil {
 		log.Fatal(err)
