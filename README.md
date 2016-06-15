@@ -1,10 +1,19 @@
 # dnotifier
 
+Send slack message when changed file.
+
+
+## install
+
+```shell
+go get github.com/satoshun/dnotifier
+```
+
 
 ## usage
 
 ```shell
-dnotifier -u ${your slack webhook url} -f ${file path} -f ${file paht} ...
+dnotifier -u ${your slack webhook url} -f ${file path} -f ${file path} ...
 ```
 
 
@@ -26,3 +35,5 @@ Watching: main.go
     files[i], _ = filepath.Abs(f)
     fmt.Println("Watching: " + f)
 ```
+
+<img src="assets/screenshot.png" width="600px">
