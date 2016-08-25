@@ -19,14 +19,14 @@ go get github.com/satoshun/dnotifier
 ## usage
 
 ```shell
-dnotifier -u ${your slack webhook url} -f ${file path} -f ${file path} ...
+dnotifier slack -u ${your slack webhook url} -f ${file path} -f ${file path} ...
 ```
 
 
 ## example
 
 ```shell
-~/g/s/g/s/dnotifier ❯❯❯ dnotifier -u https://hooks.slack.com/services/xxxxxxxxx/xxxxxxxx/xxxxxxxxxxxx -f main.go
+~/g/s/g/s/dnotifier ❯❯❯ dnotifier slack -u https://hooks.slack.com/services/xxxxxxxxx/xxxxxxxx/xxxxxxxxxxxx -f main.go
 Watching: main.go
 /Users/satouhayabusa/go/src/github.com/satoshun/dnotifier/main.go
 2016/06/15 10:43:00 main.go:55: post:--- /dev/fd/63 2016-06-15 10:43:00.000000000 +0000
@@ -43,3 +43,8 @@ Watching: main.go
 ```
 
 <img src="assets/screenshot.png" width="600px">
+
+
+## todos
+
+- IRC, Hipchat, etc

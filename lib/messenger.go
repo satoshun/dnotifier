@@ -61,6 +61,5 @@ func (s *Slack) username() string {
 func standardMessage(message string) string {
 	s := strings.Replace(message, `\n`, `\\n`, -1)
 	s = strings.Replace(s, `"`, `\"`, -1)
-	fmt.Println(s)
 	return s
 }
