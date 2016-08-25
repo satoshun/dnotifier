@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 
@@ -15,6 +14,7 @@ import (
 var (
 	command string
 
+	// slack params
 	slackHookURL = flag.String("u", "", "your slack hook url")
 	channel      = flag.String("c", "#general", "your channel name. default #general")
 	userName     = flag.String("n", "", "your username")
@@ -53,7 +53,7 @@ func main() {
 		if *slackHookURL == "" || *channel == "" {
 			log.Fatal("necessary webhook url and channel params: %s,%s", *slackHookURL, *channel)
 		}
-		ms = dnotifier.NewSlack(*slackHookURL, *channel, *iconEmoji)
+		ms = dnotifier.NewSlack(*slackHookURL, *channel, *iconEmoji, *userName)
 	}
 	if ms == nil {
 		log.Fatal("illegal args")
@@ -70,12 +70,8 @@ func main() {
 		select {
 		case msg := <-w.Event:
 			if msg.Diff != "" {
-				log.Printf("changed: %s\n" + msg.Path)
-				name := *userName
-				if name == "" {
-					name = path.Base(msg.Path)
-				}
-				ms.PostMessage(name, msg.Diff)
+				log.Printf("changed: %s\n", msg.Path)
+				ms.PostMessage(msg.Diff)
 			}
 		}
 	}
