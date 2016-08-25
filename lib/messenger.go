@@ -1,4 +1,4 @@
-package dnotifier
+package lib
 
 import (
 	"bytes"
@@ -8,6 +8,18 @@ import (
 	"strings"
 )
 
+type Messenger interface {
+	PostMessage(username, message string) error
+}
+
+func NewSlack(url, channel, icon string) *Slack {
+	return &Slack{
+		HookURL:   url,
+		Channel:   channel,
+		IconEmoji: icon,
+	}
+}
+
 // Slack has slack params
 type Slack struct {
 	HookURL   string
@@ -16,7 +28,7 @@ type Slack struct {
 }
 
 // PostMessage send message
-func (s *Slack) PostMessage(username, message string) {
+func (s *Slack) PostMessage(username, message string) error {
 	var body = []byte(fmt.Sprintf(`{"channel":"%s","username":"%s","icon_emoji":"%s","text":"%s"}`,
 		s.Channel,
 		username,
@@ -31,4 +43,5 @@ func (s *Slack) PostMessage(username, message string) {
 		log.Println(resp)
 		log.Println(err)
 	}
+	return err
 }

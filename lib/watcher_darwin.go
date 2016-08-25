@@ -1,4 +1,4 @@
-package dnotifier
+package lib
 
 import (
 	"bytes"

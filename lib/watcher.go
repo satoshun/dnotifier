@@ -1,4 +1,4 @@
-package dnotifier
+package lib
 
 // Watcher is watcher
 type Watcher struct {

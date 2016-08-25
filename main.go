@@ -4,13 +4,17 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"path"
 	"path/filepath"
+	"strings"
 
 	dnotifier "github.com/satoshun/dnotifier/lib"
 )
 
 var (
+	command string
+
 	slackHookURL = flag.String("u", "", "your slack hook url")
 	channel      = flag.String("c", "#general", "your channel name. default #general")
 	userName     = flag.String("n", "", "your username")
@@ -30,26 +34,34 @@ func (i *arrayFlags) Set(value string) error {
 }
 
 func main() {
+	command = strings.ToLower(os.Args[1])
+	if command != "slack" {
+		log.Fatal("only enable Slack command")
+	}
+	// remove subcommand
+	copy(os.Args[1:], os.Args[2:])
+
 	flag.Var(&files, "f", "specified files")
 	flag.Parse()
-
-	if *slackHookURL == "" {
-		log.Fatal("please specify -u option")
-	}
 
 	if len(files) == 0 {
 		log.Fatal("please specify -f option")
 	}
 
-	api := dnotifier.Slack{
-		HookURL:   *slackHookURL,
-		Channel:   *channel,
-		IconEmoji: *iconEmoji,
+	var ms dnotifier.Messenger
+	if command == "slack" {
+		if *slackHookURL == "" || *channel == "" {
+			log.Fatal("necessary webhook url and channel params: %s,%s", *slackHookURL, *channel)
+		}
+		ms = dnotifier.NewSlack(*slackHookURL, *channel, *iconEmoji)
+	}
+	if ms == nil {
+		log.Fatal("illegal args")
 	}
 
 	for i, f := range files {
 		files[i], _ = filepath.Abs(f)
-		fmt.Println("Watching: " + f)
+		fmt.Printf("Watching: %s ...\n", f)
 	}
 
 	w := dnotifier.Watch(files...)
@@ -57,13 +69,13 @@ func main() {
 	for {
 		select {
 		case msg := <-w.Event:
-			log.Println("change:" + msg.Path)
 			if msg.Diff != "" {
+				log.Printf("changed: %s\n" + msg.Path)
 				name := *userName
 				if name == "" {
 					name = path.Base(msg.Path)
 				}
-				api.PostMessage(name, msg.Diff)
+				ms.PostMessage(name, msg.Diff)
 			}
 		}
 	}

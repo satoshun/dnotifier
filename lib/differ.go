@@ -1,4 +1,4 @@
-package dnotifier
+package lib
 
 import (
 	"bytes"
@@ -22,7 +22,6 @@ func init() {
 	}
 
 	tempDir = temp
-
 	cache = make(map[string]string)
 }
 
