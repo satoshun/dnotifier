@@ -29,21 +29,24 @@ type Slack struct {
 	UserName  string
 }
 
-// PostMessage send message
+// PostMessage send message to slack
 func (s *Slack) PostMessage(message string) error {
-	var body = []byte(fmt.Sprintf(`{"channel":"%s","username":"%s","icon_emoji":"%s","text":"%s"}`,
+	body := []byte(fmt.Sprintf(`{"channel":"%s","username":"%s","icon_emoji":"%s","text":"%s"}`,
 		s.Channel,
 		s.UserName,
 		s.IconEmoji,
-		"```"+strings.Replace(message, "\"", "\\\"", -1)+"```"))
-	req, _ := http.NewRequest("POST", s.HookURL, bytes.NewBuffer(body))
+		"```"+standardMessage(message)+"```"))
+	req, err := http.NewRequest("POST", s.HookURL, bytes.NewBuffer(body))
+	if err != nil {
+		return err
+	}
+
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
 
 	if err != nil {
 		log.Println(resp)
-		log.Println(err)
 	}
 	return err
 }
@@ -53,4 +56,11 @@ func (s *Slack) username() string {
 		return "unknown"
 	}
 	return s.UserName
+}
+
+func standardMessage(message string) string {
+	s := strings.Replace(message, `\n`, `\\n`, -1)
+	s = strings.Replace(s, `"`, `\"`, -1)
+	fmt.Println(s)
+	return s
 }
