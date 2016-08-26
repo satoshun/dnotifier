@@ -71,7 +71,7 @@ func main() {
 		case msg := <-w.Event:
 			if msg.Diff != "" {
 				log.Printf("changed: %s\n", msg.Path)
-				e := ms.PostMessage(msg.Diff)
+				e := ms.SendMessage(dnotifier.Message{Diff: msg.Diff})
 				if e != nil {
 					log.Println(e)
 				}

@@ -9,7 +9,11 @@ import (
 )
 
 type Messenger interface {
-	PostMessage(message string) error
+	SendMessage(message Message) error
+}
+
+type Message struct {
+	Diff string
 }
 
 func NewSlack(url, channel, icon, username string) *Slack {
@@ -29,13 +33,13 @@ type Slack struct {
 	UserName  string
 }
 
-// PostMessage send message to slack
-func (s *Slack) PostMessage(message string) error {
+// SendMessage send message to slack
+func (s *Slack) SendMessage(message Message) error {
 	body := []byte(fmt.Sprintf(`{"channel":"%s","username":"%s","icon_emoji":"%s","text":"%s"}`,
 		s.Channel,
 		s.UserName,
 		s.IconEmoji,
-		"```"+standardMessage(message)+"```"))
+		"```"+standardMessage(message.Diff)+"```"))
 	req, err := http.NewRequest("POST", s.HookURL, bytes.NewBuffer(body))
 	if err != nil {
 		return err
