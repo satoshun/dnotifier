@@ -19,7 +19,12 @@ var (
 	channel      = flag.String("c", "#general", "your channel name. default #general")
 	userName     = flag.String("n", "", "your username")
 	iconEmoji    = flag.String("i", ":ghost:", "your icon emoji")
-	files        arrayFlags
+
+	// hipchat params
+	roomid = flag.String("hc-room", "", "hipChat room id.")
+	token  = flag.String("hc-token", "", "Your HipChat access token.")
+
+	files arrayFlags
 )
 
 type arrayFlags []string
@@ -35,10 +40,8 @@ func (i *arrayFlags) Set(value string) error {
 
 func main() {
 	command = strings.ToLower(os.Args[1])
-	if command != "slack" {
-		log.Fatal("only enable Slack command")
-	}
-	// remove subcommand
+
+	// flag.ParseOne()
 	copy(os.Args[1:], os.Args[2:])
 
 	flag.Var(&files, "f", "specified files")
@@ -49,12 +52,19 @@ func main() {
 	}
 
 	var ms dnotifier.Messenger
-	if command == "slack" {
+	switch command {
+	case "slack":
 		if *slackHookURL == "" || *channel == "" {
-			log.Fatal("necessary webhook url and channel params: %s,%s", *slackHookURL, *channel)
+			log.Fatal("webhook url and channel are required.: %s,%s", *slackHookURL, *channel)
 		}
 		ms = dnotifier.NewSlack(*slackHookURL, *channel, *iconEmoji, *userName)
+	case "hipchat":
+		if *roomid == "" || *token == "" {
+			log.Fatal("roomid and token are required.: %s,%s", *roomid, *token)
+		}
+		ms = dnotifier.NewHipChat(*roomid, *token)
 	}
+
 	if ms == nil {
 		log.Fatal("illegal args")
 	}

@@ -1,8 +1,8 @@
 # dnotifier
 
-Send slack message when changed file.
+Send slack and hipchat message when changed file.
 
-It runs on OSX or Linux. if your platform is OSX then must be install `fswatch`.
+It runs on OSX or Linux. If your platform is OSX, It must be install `fswatch`.
 
 ```shell
 brew install fswatch
@@ -25,6 +25,8 @@ dnotifier slack -u ${your slack webhook url} -f ${file path} -f ${file path} ...
 
 ## example
 
+### Slack
+
 ```shell
 ~/g/s/g/s/dnotifier ❯❯❯ dnotifier slack -u https://hooks.slack.com/services/xxxxxxxxx/xxxxxxxx/xxxxxxxxxxxx -f main.go
 Watching: main.go
@@ -44,7 +46,19 @@ Watching: main.go
 
 <img src="assets/screenshot.png" width="600px">
 
+### HipChat
+
+```
+~/dev/src/github.com/nabetama/dnotifier (git)-[hipchat]-
+> ./dnotifier hipchat -hc-room <YOUR ROOM ID> -hc-token <YOUR ACCESS TOKEN> -f README.md -f /Users/nabetama/Desktop/blog.md
+Watching: README.md ...
+Watching: /Users/nabetama/Desktop/blog.md ...
+2016/12/21 18:39:49 main.go:83: changed: /Users/nabetama/dev/src/github.com/nabetama/dnotifier/README.md
+2016/12/21 18:39:49 hipchat_messenger.go:51: Send to hipchat.
+```
+
+<img src="assets/hipchat.jpg" width="600px">
 
 ## todos
 
-- IRC, Hipchat, etc
+- IRC, etc
