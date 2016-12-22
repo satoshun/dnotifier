@@ -34,6 +34,11 @@ func (i *arrayFlags) Set(value string) error {
 }
 
 func main() {
+	if len(os.Args) <= 1 {
+		usage()
+		os.Exit(0)
+	}
+
 	command = strings.ToLower(os.Args[1])
 	if command != "slack" {
 		log.Fatal("only enable Slack command")
@@ -51,7 +56,7 @@ func main() {
 	var ms dnotifier.Messenger
 	if command == "slack" {
 		if *slackHookURL == "" || *channel == "" {
-			log.Fatal("necessary webhook url and channel params: %s,%s", *slackHookURL, *channel)
+			log.Fatalf("necessary webhook url and channel params: %s,%s", *slackHookURL, *channel)
 		}
 		ms = dnotifier.NewSlack(*slackHookURL, *channel, *iconEmoji, *userName)
 	}
@@ -78,4 +83,8 @@ func main() {
 			}
 		}
 	}
+}
+
+func usage() {
+	flag.Usage()
 }
