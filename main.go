@@ -34,6 +34,11 @@ func (i *arrayFlags) Set(value string) error {
 }
 
 func main() {
+	if len(os.Args) <= 1 {
+		usage()
+		os.Exit(0)
+	}
+
 	command = strings.ToLower(os.Args[1])
 	if command != "slack" {
 		log.Fatal("only enable Slack command")
@@ -78,4 +83,8 @@ func main() {
 			}
 		}
 	}
+}
+
+func usage() {
+	flag.Usage()
 }
