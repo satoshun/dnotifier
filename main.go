@@ -51,7 +51,7 @@ func main() {
 	var ms dnotifier.Messenger
 	if command == "slack" {
 		if *slackHookURL == "" || *channel == "" {
-			log.Fatal("necessary webhook url and channel params: %s,%s", *slackHookURL, *channel)
+			log.Fatalf("necessary webhook url and channel params: %s,%s", *slackHookURL, *channel)
 		}
 		ms = dnotifier.NewSlack(*slackHookURL, *channel, *iconEmoji, *userName)
 	}
