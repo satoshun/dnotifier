@@ -55,8 +55,11 @@ func main() {
 
 	var ms dnotifier.Messenger
 	if command == "slack" {
-		if *slackHookURL == "" || *channel == "" {
-			log.Fatalf("necessary webhook url and channel params: %s,%s", *slackHookURL, *channel)
+		if *slackHookURL == "" {
+			log.Fatal("necessary webhook url: -u")
+		}
+		if *channel == "" {
+			log.Fatal("necessary channel params: -c")
 		}
 		ms = dnotifier.NewSlack(*slackHookURL, *channel, *iconEmoji, *userName)
 	}
@@ -70,15 +73,18 @@ func main() {
 	}
 
 	w := dnotifier.Watch(files...)
+	log.Fatal(watch(ms, w))
+}
 
+func watch(m dnotifier.Messenger, w dnotifier.Watcher) error {
 	for {
 		select {
 		case msg := <-w.Event:
 			if msg.Diff != "" {
 				log.Printf("changed: %s\n", msg.Path)
-				e := ms.SendMessage(dnotifier.Message{Diff: msg.Diff})
+				e := m.SendMessage(dnotifier.Message{Diff: msg.Diff})
 				if e != nil {
-					log.Println(e)
+					return e
 				}
 			}
 		}
