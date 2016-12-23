@@ -24,7 +24,10 @@ func Watch(paths ...string) Watcher {
 			i   int
 		)
 		cmd.Stdout = &out
-		cmd.Start()
+		err := cmd.Start()
+		if err != nil {
+			log.Fatal(err)
+		}
 		for {
 			select {
 			case <-time.After(time.Second * 3):
