@@ -1,5 +1,7 @@
 # dnotifier
 
+[![Build Status](https://travis-ci.org/satoshun/dnotifier.svg?branch=imp%2Fci)](https://travis-ci.org/satoshun/dnotifier)
+
 Send slack message when changed file.
 
 It runs on OSX or Linux. if your platform is OSX then must be install `fswatch`.
