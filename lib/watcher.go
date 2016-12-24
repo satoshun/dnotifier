@@ -17,30 +17,29 @@ type EventItem struct {
 	Diff string
 }
 
-// Watch is watch specified path
-func Watch(path ...string) Watcher {
+// Watch is watch specified paths
+func Watch(paths ...string) Watcher {
 	event := make(chan EventItem)
-	for _, p := range path {
-		watch(p, event)
-	}
+	watch(paths, event)
 
 	return Watcher{
 		Event: event,
 	}
 }
 
-func watch(p string, event chan<- EventItem) {
+func watch(paths []string, event chan<- EventItem) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = watcher.Add(p)
-	if err != nil {
-		log.Fatal(err)
+	for _, p := range paths {
+		err = watcher.Add(p)
+		if err != nil {
+			log.Fatal(err)
+		}
+		register(p)
 	}
-
-	register(p)
 
 	go func() {
 		defer watcher.Close()
@@ -48,8 +47,8 @@ func watch(p string, event chan<- EventItem) {
 			select {
 			case ev := <-watcher.Events:
 				// write event
-				if ev.Op|fsnotify.Write > 0 {
-					event <- diff(p)
+				if ev.Op&fsnotify.Write > 0 {
+					event <- diff(ev.Name)
 				}
 			case err := <-watcher.Errors:
 				log.Println("error: ", err)
