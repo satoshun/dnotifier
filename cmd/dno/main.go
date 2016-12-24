@@ -40,8 +40,8 @@ func main() {
 	}
 
 	command = strings.ToLower(os.Args[1])
-	if command != "slack" {
-		log.Fatal("only enable Slack command")
+	if command != "local" && command != "slack" {
+		log.Fatalf("not corresponds command: %s", command)
 	}
 	// remove subcommand
 	copy(os.Args[1:], os.Args[2:])
@@ -54,7 +54,8 @@ func main() {
 	}
 
 	var ms dnotifier.Messenger
-	if command == "slack" {
+	switch command {
+	case "slack":
 		if *slackHookURL == "" {
 			log.Fatal("necessary webhook url: -u")
 		}
@@ -62,7 +63,10 @@ func main() {
 			log.Fatal("necessary channel params: -c")
 		}
 		ms = dnotifier.NewSlack(*slackHookURL, *channel, *iconEmoji, *userName)
+	case "local":
+		ms = dnotifier.NewLocal()
 	}
+
 	if ms == nil {
 		log.Fatal("illegal args")
 	}
