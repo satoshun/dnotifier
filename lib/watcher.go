@@ -46,8 +46,8 @@ func watch(paths []string, event chan<- EventItem) {
 		for {
 			select {
 			case ev := <-watcher.Events:
-				// write event
-				if ev.Op&fsnotify.Write > 0 {
+				// write or rename event
+				if ev.Op&fsnotify.Write > 0 || ev.Op&fsnotify.Rename > 0 {
 					event <- diff(ev.Name)
 				}
 			case err := <-watcher.Errors:
