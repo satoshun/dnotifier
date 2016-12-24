@@ -4,24 +4,18 @@
 
 Send slack message when changed file.
 
-It runs on OSX or Linux. if your platform is OSX then must be install `fswatch`.
-
-```shell
-brew install fswatch
-```
-
 
 ## install
 
 ```shell
-go get github.com/satoshun/dnotifier
+go get github.com/satoshun/dnotifier/cmd/dno
 ```
 
 
 ## usage
 
 ```shell
-dnotifier slack -u ${your slack webhook url} -f ${file path} -f ${file path} ...
+dno slack -u ${your slack webhook url} -f ${file path} -f ${file path} ...
 ```
 
 
