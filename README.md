@@ -19,7 +19,9 @@ dno slack -u ${your slack webhook url} -f ${file path} -f ${file path} ...
 ```
 
 
-## example
+## Examples
+
+### In the case of slack.
 
 ```shell
 ~/g/s/g/s/dnotifier ❯❯❯ dnotifier slack -u https://hooks.slack.com/services/xxxxxxxxx/xxxxxxxx/xxxxxxxxxxxx -f main.go
@@ -40,7 +42,22 @@ Watching: main.go
 
 <img src="assets/screenshot.png" width="600px">
 
+### In the case of HipChat.
+
+```sh
+~/dev/src/github.com/satoshun/dnotifier/cmd/dno (git)-[hipchat]-
+> ./dno hipchat -hc-room <YOUR ROOM ID> -hc-token <YOUR ACCESS TOKEN> -f /Users/nabetama/Desktop/blog.md
+Watching: /Users/nabetama/Desktop/blog.md ...
+2016/12/30 11:52:14 changed: /Users/nabetama/Desktop/blog.md
+2016/12/30 11:52:14 Send to hipchat.
+2016/12/30 11:52:16 Done sending a diff log.
+2016/12/30 11:52:33 changed: /Users/nabetama/Desktop/blog.md
+2016/12/30 11:52:33 Send to hipchat.
+2016/12/30 11:52:33 Done sending a diff log.
+```
+
+<img src="assets/hipchat.jpg" width="600px">
 
 ## todos
 
-- IRC, Hipchat, etc
+- IRC, etc
