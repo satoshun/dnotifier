@@ -24,7 +24,7 @@ func NewHipChat(roomid, token string) *HipChat {
 	}
 }
 
-// HipChat has toke room id and access token.
+// HipChat has room id and access token.
 // See: https://<your team>.hipchat.com/rooms/
 type HipChat struct {
 	RoomID string
