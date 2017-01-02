@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os/exec"
 	"strings"
 	"syscall"
@@ -36,10 +35,10 @@ func storeInCache(path string) error {
 	return nil
 }
 
-func diff(path string) EventItem {
+func diff(path string) (*EventItem, error) {
 	n, err := ioutil.ReadFile(path)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	cmd := exec.Command(bashPath, "-c", fmt.Sprintf(`diff -u <(echo -n '%s') %s`, strings.Replace(cache[path], "'", "\\'", -1), path))
@@ -58,5 +57,5 @@ func diff(path string) EventItem {
 	}
 
 	cache[path] = string(n)
-	return EventItem{Path: path, Diff: r}
+	return &EventItem{Path: path, Diff: r}, nil
 }

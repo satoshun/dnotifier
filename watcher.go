@@ -51,7 +51,11 @@ func watch(paths []string, event chan<- EventItem) {
 			case ev := <-watcher.Events:
 				// write or rename event
 				if ev.Op&fsnotify.Write > 0 || ev.Op&fsnotify.Rename > 0 {
-					event <- diff(ev.Name)
+					e, err := diff(ev.Name)
+					if err != nil {
+						log.Fatal(err)
+					}
+					event <- *e
 				}
 			case err := <-watcher.Errors:
 				log.Println("error: ", err)

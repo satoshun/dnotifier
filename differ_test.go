@@ -23,7 +23,7 @@ func TestDiff(t *testing.T) {
 	cache = make(map[string]string)
 	cache["./differ_test.go"] = "hoge"
 
-	item := diff("./differ_test.go")
+	item, _ := diff("./differ_test.go")
 	if item.Diff == "" {
 		t.Error("no diff")
 	}
@@ -31,7 +31,7 @@ func TestDiff(t *testing.T) {
 		t.Error("wrong prefix")
 	}
 
-	item = diff("./differ_test.go")
+	item, _ = diff("./differ_test.go")
 	if item.Diff != "" {
 		t.Error("diff")
 	}
