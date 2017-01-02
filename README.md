@@ -1,6 +1,6 @@
 # dnotifier
 
-[![Build Status](https://travis-ci.org/satoshun/dnotifier.svg?branch=imp%2Fci)](https://travis-ci.org/satoshun/dnotifier) [![codecov](https://codecov.io/gh/satoshun/dnotifier/branch/master/graph/badge.svg)](https://codecov.io/gh/satoshun/dnotifier)
+[![GoDoc](https://godoc.org/github.com/satoshun/dnotifier?status.svg)](https://godoc.org/github.com/satoshun/dnotifier) [![Build Status](https://travis-ci.org/satoshun/dnotifier.svg?branch=imp%2Fci)](https://travis-ci.org/satoshun/dnotifier) [![codecov](https://codecov.io/gh/satoshun/dnotifier/branch/master/graph/badge.svg)](https://codecov.io/gh/satoshun/dnotifier)
 
 
 Send slack message when changed file.
