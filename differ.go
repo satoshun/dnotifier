@@ -27,13 +27,13 @@ func init() {
 	cache = make(map[string]string)
 }
 
-func storeInCache(path string) {
+func storeInCache(path string) error {
 	dat, err := ioutil.ReadFile(path)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
-
 	cache[path] = string(dat)
+	return nil
 }
 
 func diff(path string) EventItem {
