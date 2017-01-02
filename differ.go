@@ -10,6 +10,8 @@ import (
 	"syscall"
 )
 
+const bashPath = "/bin/bash"
+
 var (
 	cache   map[string]string
 	tempDir string
@@ -25,7 +27,7 @@ func init() {
 	cache = make(map[string]string)
 }
 
-func register(path string) {
+func storeInCache(path string) {
 	dat, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Fatal(err)
@@ -40,7 +42,7 @@ func diff(path string) EventItem {
 		log.Fatal(err)
 	}
 
-	cmd := exec.Command("/bin/bash", "-c", fmt.Sprintf(`diff -u <(echo -n '%s') %s`, strings.Replace(cache[path], "'", "\\'", -1), path))
+	cmd := exec.Command(bashPath, "-c", fmt.Sprintf(`diff -u <(echo -n '%s') %s`, strings.Replace(cache[path], "'", "\\'", -1), path))
 	var stderr, stdout bytes.Buffer
 	cmd.Stderr = &stderr
 	cmd.Stdout = &stdout

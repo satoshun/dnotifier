@@ -38,7 +38,7 @@ func watch(paths []string, event chan<- EventItem) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		register(p)
+		storeInCache(p)
 	}
 
 	go func() {
