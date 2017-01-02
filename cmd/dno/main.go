@@ -19,7 +19,12 @@ var (
 	channel      = flag.String("c", "#general", "your channel name. default #general")
 	userName     = flag.String("n", "", "your username")
 	iconEmoji    = flag.String("i", ":ghost:", "your icon emoji")
-	files        arrayFlags
+
+	// hipchat params
+	roomid = flag.String("hc-room", "", "hipChat room id.")
+	token  = flag.String("hc-token", "", "Your HipChat access token.")
+
+	files arrayFlags
 )
 
 type arrayFlags []string
@@ -40,7 +45,7 @@ func main() {
 	}
 
 	command = strings.ToLower(os.Args[1])
-	if command != "local" && command != "slack" {
+	if command != "local" && command != "slack" && command != "hipchat" {
 		log.Fatalf("not corresponds command: %s", command)
 	}
 	// remove subcommand
@@ -63,6 +68,12 @@ func main() {
 			log.Fatal("necessary channel params: -c")
 		}
 		ms = dnotifier.NewSlack(*slackHookURL, *channel, *iconEmoji, *userName)
+	case "hipchat":
+		if *roomid == "" || *token == "" {
+			log.Fatalf("roomid and token are required.: %s,%s", *roomid, *token)
+		}
+		ms = dnotifier.NewHipChat(*roomid, *token)
+
 	case "local":
 		ms = dnotifier.NewLocal()
 	}
