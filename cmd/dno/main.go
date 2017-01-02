@@ -87,11 +87,15 @@ func main() {
 		fmt.Printf("Watching: %s ...\n", f)
 	}
 
-	w := dnotifier.Watch(files...)
+	w, err := dnotifier.Watch(files...)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	log.Fatal(watch(ms, w))
 }
 
-func watch(m dnotifier.Messenger, w dnotifier.Watcher) error {
+func watch(m dnotifier.Messenger, w *dnotifier.Watcher) error {
 	for {
 		select {
 		case msg := <-w.Event:

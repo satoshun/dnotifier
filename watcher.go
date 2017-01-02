@@ -18,29 +18,32 @@ type EventItem struct {
 }
 
 // Watch is watch specified paths
-func Watch(paths ...string) Watcher {
+func Watch(paths ...string) (*Watcher, error) {
 	event := make(chan EventItem)
-	watch(paths, event)
-
-	return Watcher{
-		Event: event,
+	err := watch(paths, event)
+	if err != nil {
+		return nil, err
 	}
+
+	return &Watcher{
+		Event: event,
+	}, nil
 }
 
-func watch(paths []string, event chan<- EventItem) {
+func watch(paths []string, event chan<- EventItem) error {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	for _, p := range paths {
 		err = watcher.Add(p)
 		if err != nil {
-			log.Fatal(err)
+			return err
 		}
 		err = storeInCache(p)
 		if err != nil {
-			log.Fatal(err)
+			return err
 		}
 	}
 
@@ -62,4 +65,5 @@ func watch(paths []string, event chan<- EventItem) {
 			}
 		}
 	}()
+	return nil
 }
