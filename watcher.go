@@ -56,12 +56,12 @@ func watch(paths []string, event chan<- EventItem) error {
 				if ev.Op&fsnotify.Write > 0 || ev.Op&fsnotify.Rename > 0 {
 					e, err := diff(ev.Name)
 					if err != nil {
-						log.Fatal(err)
+						log.Fatal(err, ev)
 					}
 					event <- *e
 				}
 			case err := <-watcher.Errors:
-				log.Println("error: ", err)
+				log.Fatal(err)
 			}
 		}
 	}()
