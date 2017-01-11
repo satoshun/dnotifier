@@ -1,0 +1,12 @@
+hash: b4e41f5fc9e2ffe7d5c55b7409d91e6ad20e0e44bf839163b4a4724148ada2a3
+updated: 2017-01-11T11:45:00.14816993+09:00
+imports:
+- name: github.com/fsnotify/fsnotify
+  version: fd9ec7deca8bf46ecd2a795baaacf2b3a9be1197
+- name: github.com/satoshun/dnotifier
+  version: a866c31155537c74c01936708143d4145dfe18e9
+- name: golang.org/x/sys
+  version: d75a52659825e75fff6158388dddc6a5b04f9ba5
+  subpackages:
+  - unix
+testImports: []
