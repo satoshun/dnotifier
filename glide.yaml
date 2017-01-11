@@ -1,0 +1,4 @@
+package: github.com/nabetama/dnotifier
+import:
+- package: github.com/fsnotify/fsnotify
+- package: github.com/satoshun/dnotifier
